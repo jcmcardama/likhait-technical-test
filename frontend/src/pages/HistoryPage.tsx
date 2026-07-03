@@ -148,12 +148,7 @@ const HistoryPage: React.FC = () => {
             onYearChange={handleYearChange}
           />
         </div>
-        <Button
-          variant="primary"
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        >
+        <Button variant="primary" onClick={() => setIsModalOpen(true)}>
           Add Expense
         </Button>
       </div>
