@@ -86,14 +86,14 @@ const Sidebar: React.FC<SidebarProps> = ({
     padding: "16px 0",
   };
 
-  const navItemStyle: React.CSSProperties = {
+  const getNavItemStyle = (page: string): React.CSSProperties => ({
     width: "100%",
     padding: isCollapsed ? "16px" : "16px 24px",
     display: "flex",
     alignItems: "center",
     justifyContent: isCollapsed ? "center" : "flex-start",
     gap: "16px",
-    background: currentPage === "history" ? COLORS.primary.p03 : "transparent",
+    background: currentPage === page ? COLORS.primary.p03 : "transparent",
     border: "none",
     cursor: "pointer",
     fontSize: "18px",
@@ -101,7 +101,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     color: COLORS.primary.p09,
     textAlign: "left",
     transition: "background 0.2s",
-  };
+  });
 
   const navTextStyle: React.CSSProperties = {
     display: isCollapsed ? "none" : "inline",
@@ -140,7 +140,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       <nav style={navStyle}>
         <button
-          style={navItemStyle}
+          style={getNavItemStyle("history")}
           onClick={() => onNavigate?.("history")}
           onMouseEnter={(e) => {
             if (currentPage !== "history") {
@@ -167,6 +167,40 @@ const Sidebar: React.FC<SidebarProps> = ({
             <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
           <span style={navTextStyle}>History</span>
+        </button>
+        <button
+          style={getNavItemStyle("categories")}
+          onClick={() => onNavigate?.("categories")}
+          onMouseEnter={(e) => {
+            if (currentPage !== "categories") {
+              e.currentTarget.style.background = COLORS.primary.p02;
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (currentPage !== "categories") {
+              e.currentTarget.style.background = "transparent";
+            }
+          }}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="6" cy="6" r="1.5" />
+            <circle cx="6" cy="12" r="1.5" />
+            <circle cx="6" cy="18" r="1.5" />
+
+            <line x1="10" y1="6" x2="20" y2="6" />
+            <line x1="10" y1="12" x2="20" y2="12" />
+            <line x1="10" y1="18" x2="20" y2="18" />
+          </svg>
+          <span style={navTextStyle}>Categories</span>
         </button>
       </nav>
     </aside>
