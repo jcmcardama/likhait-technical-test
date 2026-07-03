@@ -2,7 +2,7 @@
  * API service for communicating with the backend
  */
 
-import { Category, Expense, ExpenseFormData } from "../types";
+import { Category, CategoryFormData, Expense, ExpenseFormData } from "../types";
 
 const API_BASE_URL = "http://localhost:3000/api";
 
@@ -61,6 +61,41 @@ export async function createCategory(data: { name: string }): Promise<{ id: numb
   }
 
   return response.json();
+}
+
+/**
+ * Update an existing category
+ */
+export async function updateCategory(
+  id: number,
+  data: Partial<CategoryFormData>,
+): Promise<Category> {
+  const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ category: data }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update category");
+  }
+
+  return response.json();
+}
+
+/**
+ * Delete a category
+ */
+export async function deleteCategory(id: number): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete category");
+  }
 }
 
 /**

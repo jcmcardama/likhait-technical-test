@@ -4,6 +4,7 @@ import { Category, CategoryFormData } from "../types";
 import { Modal, Button } from "../vibes";
 import { COLORS } from "../constants/colors";
 import { CategoryForm } from "../components/CategoryForm";
+import { CategoryTable } from "../components/CategoryTable";
 
 const CategoryPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -94,15 +95,7 @@ const CategoryPage: React.FC = () => {
           <div style={loadingStyle}>Loading...</div>
         ) : (
           <div style={{ marginTop: "32px" }}>
-            {categories.length === 0 ? (
-              <div style={loadingStyle}>No categories found.</div>
-            ) : (
-              <ul>
-                {categories.map((category) => (
-                  <li key={category.id}>{category.name}</li>
-                ))}
-              </ul>
-            )}
+            <CategoryTable categories={categories} onCategoryUpdated={loadCategories} />
           </div>
         )}
       </div>
