@@ -47,7 +47,7 @@ export async function fetchCategories(): Promise<Category[]> {
 /**
  * Create a new category
  */
-export async function createCategory(data: { name: string }): Promise<{ id: number; name: string }> {
+export async function createCategory(data: CategoryFormData): Promise<Category> {
   const response = await fetch(`${API_BASE_URL}/categories`, {
     method: "POST",
     headers: {
