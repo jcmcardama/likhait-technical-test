@@ -4,7 +4,7 @@ class Api::ExpensesController < ApplicationController
 
     if params[:year].present? && params[:month].present?
       date_range = parse_date_range(params[:year], params[:month])
-      return render json: { errors: ["Invalid year or month"] }, status: :unprocessable_entity unless date_range
+      return render json: { errors: [ "Invalid year or month" ] }, status: :unprocessable_entity unless date_range
 
       expenses = expenses.where(date: date_range)
     end
