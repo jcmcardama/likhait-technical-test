@@ -1,15 +1,12 @@
 class Api::ExpensesController < ApplicationController
   def index
-    expenses = Expense.includes(:category).order(created_at: :desc)
+    expenses = Expense.includes(:category).order(date: :desc, created_at: :desc)
 
     if params[:year].present? && params[:month].present?
-      year = params[:year].to_i
-      month = params[:month].to_i
+      date_range = parse_date_range(params[:year], params[:month])
+      return render json: { errors: [ "Invalid year or month" ] }, status: :unprocessable_entity unless date_range
 
-      start_date = Date.new(year, month, 1)
-      end_date = start_date.end_of_month
-
-      expenses = expenses.where(created_at: start_date.beginning_of_day..end_date.end_of_day)
+      expenses = expenses.where(date: date_range)
     end
 
     render json: expenses.map { |expense| format_expense(expense) }
@@ -42,6 +39,19 @@ class Api::ExpensesController < ApplicationController
   end
 
   private
+
+  def parse_date_range(year, month)
+    return nil unless year.to_s.match?(/\A\d+\z/) && month.to_s.match?(/\A\d+\z/)
+
+    year_i = year.to_i
+    month_i = month.to_i
+    return nil unless year_i.between?(1, 9999) && month_i.between?(1, 12)
+
+    start_date = Date.new(year_i, month_i, 1)
+    start_date..start_date.end_of_month
+  rescue ArgumentError, TypeError
+    nil
+  end
 
   def expense_params
     params.require(:expense).permit(:description, :amount, :category_id, :date)
