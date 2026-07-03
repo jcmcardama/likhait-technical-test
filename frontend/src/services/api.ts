@@ -53,7 +53,7 @@ export async function createCategory(data: { name: string }): Promise<{ id: numb
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({ category: data }),
   });
 
   if (!response.ok) {

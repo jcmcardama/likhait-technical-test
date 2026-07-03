@@ -46,6 +46,7 @@ export interface DayExpenses {
 export interface Category {
   id: number;
   name: string;
+  expenses_count: number;
 }
 
 export interface CategoryFormData {

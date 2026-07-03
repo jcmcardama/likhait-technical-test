@@ -8,7 +8,7 @@ import { getCategoryEmoji } from "../constants/categoryEmojis";
 import { COLORS } from "../constants/colors";
 import { Button, Modal, Pagination } from "../vibes";
 import { deleteCategory, updateCategory } from "../services/api";
-import { CategoryForm } from "./CategoryForm.tsx";
+import { CategoryForm } from "./CategoryForm";
 
 interface CategoryTableProps {
   categories: Category[];
@@ -205,7 +205,7 @@ export function CategoryTable({
       >
         <div style={{ padding: "1rem 0" }}>
           <p style={{ marginBottom: "1.5rem", color: COLORS.text.primary }}>
-            Are you sure you want to delete this category?
+            This will also permanently delete {deletingCategory?.expenses_count}{" "} expense/s associated with this category. This cannot be undone.
           </p>
           {deletingCategory && (
             <p style={{ marginBottom: "1.5rem", color: COLORS.text.secondary }}>

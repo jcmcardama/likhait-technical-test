@@ -89,7 +89,6 @@ export function ExpenseForm({
         options={categoryOptions}
         value={formData.category}
         onChange={(e) => handleChange("category", e.target.value)}
-        onClick={() => fetchCategories()} // Fetch categories when the select box is clicked
         error={errors.category}
         fullWidth
         required
