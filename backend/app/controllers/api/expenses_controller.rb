@@ -41,7 +41,13 @@ class Api::ExpensesController < ApplicationController
   private
 
   def parse_date_range(year, month)
-    start_date = Date.new(year.to_i, month.to_i, 1)
+    return nil unless year.to_s.match?(/\A\d+\z/) && month.to_s.match?(/\A\d+\z/)
+
+    year_i = year.to_i
+    month_i = month.to_i
+    return nil unless year_i.between?(1, 9999) && month_i.between?(1, 12)
+
+    start_date = Date.new(year_i, month_i, 1)
     start_date..start_date.end_of_month
   rescue ArgumentError, TypeError
     nil
