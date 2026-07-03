@@ -1,6 +1,9 @@
 class Api::CategoriesController < ApplicationController
   def index
-    categories = Category.order(:name)
+    categories = Category.left_joins(:expenses)
+                        .select("categories.*, COUNT(expenses.id) AS expenses_count")
+                        .group("categories.id")
+                        .order(:name)
     render json: categories
   end
 
