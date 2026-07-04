@@ -6,13 +6,17 @@ import { MonthNavigation } from "../components/MonthNavigation";
 import CategoryBreakdown from "../components/CategoryBreakdown";
 import { CalendarExpenseTable } from "../components/CalendarExpenseTable";
 import { ExpenseForm } from "../components/ExpenseForm";
-import { Modal, Button } from "../vibes";
+import { Modal, Button, showSnackbar } from "../vibes";
 import { COLORS } from "../constants/colors";
 
 const HistoryPage: React.FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Validates year and month values
+  const isValidYear = (year: number) => Number.isInteger(year) && year > 0;
+  const isValidMonth = (month: number) => Number.isInteger(month) && month >= 1 && month <= 12;
 
   // Get year and month from URL params, default to current date if not provided
   const getInitialYearMonth = () => {
@@ -21,9 +25,12 @@ const HistoryPage: React.FC = () => {
     const yearParam = params.get("year");
     const monthParam = params.get("month");
 
+    const parsedYear = yearParam ? parseInt(yearParam, 10) : NaN;
+    const parsedMonth = monthParam ? parseInt(monthParam, 10) : NaN;
+
     return {
-      year: yearParam ? parseInt(yearParam) : currentDate.getFullYear(),
-      month: monthParam ? parseInt(monthParam) : currentDate.getMonth() + 1,
+      year: isValidYear(parsedYear) ? parsedYear : currentDate.getFullYear(),
+      month: isValidMonth(parsedMonth) ? parsedMonth : currentDate.getMonth() + 1,
     };
   };
 
@@ -56,6 +63,18 @@ const HistoryPage: React.FC = () => {
       setExpenses(data);
     } catch (error) {
       console.error("Error fetching expenses:", error);
+      showSnackbar("Failed to fetch expenses", "error");
+
+       // If the fetch fails, reset to current date
+      const currentDate = new Date();
+      const fallbackYear = currentDate.getFullYear();
+      const fallbackMonth = currentDate.getMonth() + 1;
+
+      if (selectedYear !== fallbackYear || selectedMonth !== fallbackMonth) {
+        setSelectedYear(fallbackYear);
+        setSelectedMonth(fallbackMonth);
+        updateURL(fallbackYear, fallbackMonth);
+      }
     } finally {
       setLoading(false);
     }
@@ -76,8 +95,10 @@ const HistoryPage: React.FC = () => {
       await createExpense(data);
       setIsModalOpen(false);
       fetchExpenses();
+      showSnackbar("Expense added successfully", "success");
     } catch (error) {
       console.error("Error creating expense:", error);
+      showSnackbar("Failed to add expense", "error");
       throw error;
     }
   };

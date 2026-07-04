@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import HistoryPage from "./pages/HistoryPage";
 import { COLORS } from "./constants/colors";
+import CategoryPage from "./pages/CategoryPage";
+import { SnackbarContainer } from "./vibes";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("history");
@@ -33,7 +35,9 @@ function App() {
       />
       <main style={mainStyle}>
         {currentPage === "history" && <HistoryPage />}
+        {currentPage === "categories" && <CategoryPage />}
       </main>
+      <SnackbarContainer />
     </div>
   );
 }
