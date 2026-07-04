@@ -7,7 +7,7 @@ import { Expense, ExpenseFormData } from "../types";
 import { formatCurrency, formatDate } from "../utils/expenseUtils";
 import { getCategoryEmoji } from "../constants/categoryEmojis";
 import { COLORS } from "../constants/colors";
-import { Button, Modal, Pagination } from "../vibes";
+import { Button, Modal, Pagination, showSnackbar } from "../vibes";
 import { ExpenseForm } from "./ExpenseForm.tsx";
 import { deleteExpense, updateExpense } from "../services/api";
 
@@ -50,9 +50,10 @@ export function CalendarExpenseTable({
       setIsDeleteModalOpen(false);
       setDeletingExpense(null);
       onExpenseUpdated();
+      showSnackbar("Expense deleted successfully", "success");
     } catch (error) {
       console.error("Failed to delete expense:", error);
-      alert("Failed to delete expense");
+      showSnackbar("Failed to delete expense", "error");
     }
   };
 
@@ -63,8 +64,10 @@ export function CalendarExpenseTable({
       setIsEditModalOpen(false);
       setEditingExpense(null);
       onExpenseUpdated();
+      showSnackbar("Expense updated successfully", "success");
     } catch (error) {
       console.error("Failed to update expense:", error);
+      showSnackbar("Failed to update expense", "error");
       throw error;
     }
   };
@@ -142,8 +145,8 @@ export function CalendarExpenseTable({
                     gap: "0.5rem",
                   }}
                 >
-                  <span>{getCategoryEmoji(expense.category)}</span>
-                  <span>{expense.category}</span>
+                  <span>{getCategoryEmoji(expense?.category)}</span>
+                  <span>{expense.category || "Uncategorized"}</span>
                 </span>
               </td>
               <td style={{ ...tdStyle, textAlign: "left", fontWeight: 600 }}>
