@@ -42,3 +42,13 @@ export interface DayExpenses {
   expenses: Expense[];
   total: number;
 }
+
+export interface Category {
+  id: number;
+  name: string;
+  expenses_count: number;
+}
+
+export interface CategoryFormData {
+  name: string;
+}
