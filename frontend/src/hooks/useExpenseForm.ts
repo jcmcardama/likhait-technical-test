@@ -41,10 +41,6 @@ export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
       newErrors.description = "Description is required";
     }
 
-    if (!formData.category) {
-      newErrors.category = "Category is required";
-    }
-
     if (!formData.date) {
       newErrors.date = "Date is required";
     } else if (formData.date > formatDate(new Date())) {

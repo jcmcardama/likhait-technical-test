@@ -94,7 +94,6 @@ export function ExpenseForm({
         onChange={(e) => handleChange("category", e.target.value)}
         error={errors.category}
         fullWidth
-        required
       />
 
       <TextField
